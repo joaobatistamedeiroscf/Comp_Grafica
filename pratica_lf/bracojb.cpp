@@ -3,36 +3,41 @@
 #else
 #include <GL/glut.h>
 #endif
+#include <stdlib.h>
 
-static int ano = 0, dia = 0;
+int ombro = 0, cotovelo = 0;
 
 void display(void) {
   glClear(GL_COLOR_BUFFER_BIT);
+  glPushMatrix();
+  
+  glRotatef(ombro,0.0,0.0,1.0);
 
   glPushMatrix();
-  glColor3f(0.5, 0.5, 0.0);
-  glutWireSphere(1.0, 20, 16);//desenha aresta 
+    glColor3f(0.5, 0.0, 0.0);
+    glScalef(2.0, 0.4, 1.0);
+    glutWireCube(1.0);
+    glPopMatrix();
 
+ 
   glPushMatrix();
-  {
-    glRotatef(ano,0,0,1);//rotaciona o eixo x e y//Planeta rotacionando em torno do sol
-    glTranslatef(2.0, 0.0, 0.0);//ando 2 no eixo x
+    glTranslatef(1.0,0.0,0.0);
+    glRotatef(cotovelo,0,0,1);
+    glTranslatef(1.0,0.0,0.0);
     glColor3f(0.0, 0.0, 0.5);
-    glRotatef(dia,0,0,1); //rotaciona em torno do seu próprio eixo
-    glutWireSphere(0.2, 10, 8);//desenho outra aresta
-  }
-  glPopMatrix(); 
+    glScalef(2.0, 0.4, 1.0);
+    glutWireCube(1.0);
+    glPopMatrix();
 
   glPopMatrix();
-
   glutSwapBuffers();
 }
 
 void reshape(int w, int h) {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(60.0, w / (h * 1.0), 1.0, 20.0); 
-  gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+  gluPerspective(75.0, w / (h * 1.0), 1.0, 20.0);
+  gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -41,27 +46,30 @@ void reshape(int w, int h) {
 void keyboard(unsigned char key, int x, int y) {
   switch (key) {
     case 'a':
-      dia = (dia + 10) % 360;
+      ombro = (ombro + 5) % 360;
       glutPostRedisplay();
       break;
     case 'd':
-      dia = (dia - 10) % 360;
+      ombro = (ombro - 5) % 360;
       glutPostRedisplay();
       break;
     case 's':
-      ano = (ano + 5) % 360;
+      cotovelo = (cotovelo + 5) % 360;
       glutPostRedisplay();
       break;
     case 'w':
-      ano = (ano - 5) % 360;
+      cotovelo = (cotovelo - 5) % 360;
       glutPostRedisplay();
+      break;
+    case 27:
+      exit(0);
       break;
     default:
       break;
   }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
   glutInitWindowSize(500, 500);

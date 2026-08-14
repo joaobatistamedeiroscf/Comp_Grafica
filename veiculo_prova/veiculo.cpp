@@ -2,13 +2,15 @@
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
-#endif
+#endif 
 
 #include <stdlib.h>
 
 GLdouble pos_carro = 0;
 GLdouble rot_rodas = 0;
 int cam_view = 0;
+
+
 
 void render_floor() {
   glColor3f(0.0,1.0,0.0);//cor verde
@@ -31,7 +33,7 @@ void display(void) {
 
   //desenha a placa
   glPushMatrix();{ //adiciona matriz
-    glColor3f(1.0,0.0,0.0); // cor vermelha
+    glColor4f(1.0,0.0,0.0,0.1); // cor vermelha
     glTranslatef(0.0,1.0,0.0);//move para cima o cubo ,  eixo y 
     glTranslatef(pos_carro,0.0,0.0);
     glScalef(40, 1, 20);//multiplica o tamanho - aumenta proporção do cubo , no eixo x , y e z
@@ -42,7 +44,7 @@ void display(void) {
     //roda frente direita
     glPushMatrix();
     {
-     glColor3f(0.0,0.0,0.0);//cor preta 
+     glColor4f(0.0,0.0,0.0,1);//cor preta 
      glTranslatef(20,1,10);//move 20 no x-y , 1 no y e 10 no eixo z //eixo z - lado
      glTranslatef(pos_carro,0.0,0.0);
      glRotatef(rot_rodas,0,1,0);
@@ -53,7 +55,7 @@ void display(void) {
      //roda atras direita
     glPushMatrix();
     {
-     glColor3f(0.0,0.0,0.0);//cor preta 
+     glColor4f(0.0,0.0,0.0,1);//cor preta 
      glTranslatef(-20,1,10);//move -20 no x , 1 no y e 10 no eixo z //eixo z - lado 
      glTranslatef(pos_carro,0.0,0.0);
      glutSolidTorus(1.0, 3, 15, 30);//  desenha rosquinha 
@@ -64,7 +66,7 @@ void display(void) {
     //roda frente esquerda
     glPushMatrix();
     {
-     glColor3f(0.0,0.0,0.0);//cor preta 
+     glColor4f(0.0,0.0,0.0,1);//cor preta 
      glTranslatef(20,1,-10);//move 20 no x , 1 no y e -10 no eixo z //eixo z - lado
      glTranslatef(pos_carro,0.0,0.0);
      glRotatef(rot_rodas,0,1,0);   
@@ -72,10 +74,12 @@ void display(void) {
      glPopMatrix();//volta para identidade
      }
 
+      
+
      //roda atras esquerda
     glPushMatrix();
     {
-     glColor3f(0.0,0.0,0.0);//cor preta 
+     glColor4f(0.0,0.0,0.0,1);//cor preta 
      glTranslatef(-20,1,-10);//move 20 no x , 1 no y e -10 no eixo z //eixo z - lado
      glTranslatef(pos_carro,0.0,0.0);
      glutSolidTorus(1.0, 3, 15, 30);//  desenha rosquinha 
@@ -103,6 +107,16 @@ void change_cam_view() {
   }
 }
 
+void init() {
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	// glCullFace(GL_FRONT);
+}
+
+
 void configView() {
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);//cor de fundo , definir como branco 
 
@@ -117,8 +131,6 @@ void configView() {
   glLoadIdentity();
 
   change_cam_view();
-
-  glDisable(GL_DEPTH_TEST);
 }
 
 void resize(GLsizei w, GLsizei h) {
@@ -164,9 +176,10 @@ void keyboard(unsigned char key, int x, int y) {
 
 int main(int argc, char *argv[]) {
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
   glutInitWindowSize(800, 600);
   glutCreateWindow("Visualizacao 3D");
+  init();
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
   glutSpecialFunc(specialkeys);

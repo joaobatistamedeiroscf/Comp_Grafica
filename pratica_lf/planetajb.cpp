@@ -10,18 +10,19 @@ void display(void) {
   glClear(GL_COLOR_BUFFER_BIT);
 
   glPushMatrix();
-  glColor3f(0.5, 0.5, 0.0);
-  glutWireSphere(1.0, 20, 16);//desenha aresta 
+    glColor3f(0.5, 0.5, 0.0);
+    glRotatef(ano,0,0,1);
+    glutWireSphere(1.0, 20, 16);//desenhou a primeira esfera 
+    glPopMatrix();
 
   glPushMatrix();
   {
-    glRotatef(ano,0,0,1);//rotaciona o eixo x e y//Planeta rotacionando em torno do sol
-    glTranslatef(2.0, 0.0, 0.0);//ando 2 no eixo x
     glColor3f(0.0, 0.0, 0.5);
-    glRotatef(dia,0,0,1); //rotaciona em torno do seu próprio eixo
-    glutWireSphere(0.2, 10, 8);//desenho outra aresta
+    glRotatef(dia,0,0,1); //rotaciona
+    glTranslatef(2.0, 0.0, 0.0);//move no 2 no eixo x , lado esquerdo
+    glutWireSphere(0.2, 10, 8);//desenha a senguda esfera
   }
-  glPopMatrix(); 
+  glPopMatrix();
 
   glPopMatrix();
 
@@ -31,7 +32,7 @@ void display(void) {
 void reshape(int w, int h) {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(60.0, w / (h * 1.0), 1.0, 20.0); 
+  gluPerspective(60.0, w / (h * 1.0), 1.0, 20.0);
   gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
   glMatrixMode(GL_MODELVIEW);

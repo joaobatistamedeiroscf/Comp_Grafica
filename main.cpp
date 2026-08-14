@@ -1,3 +1,4 @@
+#include <iostream>
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -14,7 +15,7 @@ float hourAngle, minuteAngle, secondAngle;
 void drawClockFace() {
   glColor3f(0.2f, 0.2f, 0.2f);
 
-  // marcações das horas
+  // marca��es das horas
   for (int i = 0; i < 12; ++i) {
     glPushMatrix();
     float angle = i * 30.0f;
@@ -39,7 +40,7 @@ void updateTimeAngles() {
   hourAngle = -((hours % 12 + minutes / 60.0f) * 30.0f);
   minuteAngle = -(minutes * 6.0f);
   secondAngle = -(seconds * 6.0f);
-    
+    std::cout<<hours<<":"<<minutes<<":"<<seconds<<std::endl;
 }
 
 void display(void) {
@@ -47,48 +48,45 @@ void display(void) {
 
   updateTimeAngles();
 
-  drawClockFace();
-  glPushMatrix();{
-    glColor3f(0.0,0.0,0.0);//cor preta
-    glRotatef(90,1,0,0); // eixo x  
-    glutSolidTorus(1, 30, 30, 100);//rosquinha
-   
-  }
-  glPopMatrix();
-  
 
-  //ponteiro das horas
-  glPushMatrix();
-  {
-    glColor3f(0.0,1.0,0.0);//cor verde 
-    glRotatef(hourAngle,0,0,1);
-    glTranslatef(8,0,0);
-    glScalef(16, 1, 1);//multiplica a escala do x , y  e z
-    glutSolidCube(1);
-  }
+  drawClockFace();
+    glPushMatrix();
+    {
+        glRotatef(90, 1, 0, 0);
+        glutSolidTorus(1, 30, 30, 100);
+    }
     glPopMatrix();
 
-  
-  //ponteito dos minutos
+    //Ponteiro Horas
   glPushMatrix();
   {
-    glColor3f(0.0,0.0,1.0);//cor azul
-    glRotatef(minuteAngle,0,1,0);
-    glTranslatef(12,0,0);
+      glColor3f(0,0,1);
+      glRotatef(hourAngle,0,1,0);
+      glTranslatef(8,0,0);
+
+    glScalef(16, 1, 1);
+    glutSolidCube(1);
+  }
+  glPopMatrix();
+
+  //Ponteiro Minutos
+  glPushMatrix();
+  {
+      glColor3f(0,1,0);
+      glRotatef(minuteAngle,0,1,0);
+      glTranslatef(12,0,0);
+
     glScalef(24, 1, 1);
     glutSolidCube(1);
   }
   glPopMatrix();
 
-
-
-  //marcação do relogio  
+  //Ponteiro segundos
   glPushMatrix();
   {
-    glColor3f(1.0,0.0,0.0);//cor vermelha
-    glRotatef(secondAngle,0 ,1,0);
-    glTranslatef(25,0,0);
-    
+      glColor3f(1,0,0);
+      glRotatef(secondAngle,0,1,0);
+      glTranslatef(25,0,0);
     glScalef(2, 1, 1);
     glutSolidCube(1);
   }
